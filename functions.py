@@ -14,21 +14,16 @@ def parse_arguments():
 
 
 # This helps specify the language code
-def generate_excel_files(data, output_dir, pivot_language='en'):
+def generate_excel_files(data, output_dir, selected_language):
     os.makedirs(output_dir, exist_ok=True)
 
-    # Get the list of available language codes (excluding the pivot language)
-    available_languages = [lang_code for lang_code in data.keys() if lang_code != pivot_language]
-
-    # Prompt the user to select a language code
-    print("Available language codes (excluding pivot language):", available_languages)
-    target_language = input("Enter the language code for which you want to generate an Excel file: ")
-
-    # Check if the selected language code is valid
-    if target_language not in available_languages:
-        print("Invalid language code. Please select a valid language code.")
-        return
-
+    # Generate Excel file for the selected language
+    for language_code, language_data in data.items():
+        if language_code != selected_language:
+            df = pd.DataFrame(language_data)
+            output_filename = os.path.join(output_dir, f"{selected_language}-{language_code}.xlsx")
+            df.to_excel(output_filename, index=False)
+            print(f"Excel file generated for language {language_code}.")
 
 # This function loads the data from the specified input directory that contains the JSONL files.
 def load_data(input_dir):
@@ -69,10 +64,16 @@ def main():
 
     data = load_data(input_dir)
 
-    generate_language_excel = input("Do you want to generate Excel files for a specific language? (y/n): ")
+    generate_language_excel = input("Do you want to generate Excel files for a specific language? If no, only 'en' will generate. (y/n): ")
     if generate_language_excel.lower() == 'y':
+        # Get the list of available language codes (excluding the pivot language)
+        available_languages = [lang_code for lang_code in data.keys()]
+
+        # Prompt the user to select a language code
+        print("Available language codes (excluding pivot language):", available_languages)
+        selected_language = input("Enter the language code for which you want to generate an Excel file: ")
         # Call the generate_excel_files function to generate Excel for a specific language
-        generate_excel_files(data, output_dir, pivot_language='en')  # You can specify the pivot language here.
+        generate_excel_files(data, output_dir, selected_language)  # You can specify the pivot language here.
     else:
         # Generate Excel files for all languages
         for language_code, language_data in data.items():
@@ -83,5 +84,5 @@ def main():
     print("Excel files generated for selected languages.")
 
 
-if __name__ == "__main__":
+if _name_ == "_main_":
     main()
