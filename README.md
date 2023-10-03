@@ -68,6 +68,23 @@ The main function of this project. It processes data from the input directory an
 ### `split_and_save_data(data, language, folder_path)`
 
 A function for splitting and saving data based on language.
+## Project Backup to Google Drive
+
+This Python script automates project backup to Google Drive, uploading files from a local project folder to a specified Google Drive folder.
+
+### Usage
+
+1. **Requirements**: Ensure you have Python 3 installed and the `pydrive` library (`pip install pydrive`).
+
+
+### Results
+
+Files from the local project folder are uploaded to Google Drive, and a 'large_translation.json' file is created.
+
+### Note
+
+- Ensure the Google account used for authentication has the right permissions.
+
 
 ## Usage
 
